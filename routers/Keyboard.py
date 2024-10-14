@@ -3,6 +3,7 @@ from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
 
 router = Router()
 
+
 def key_get_start():
     button = KeyboardButton(text="О сельсовете")
     button_1 = KeyboardButton(text="Галерея")
@@ -12,10 +13,9 @@ def key_get_start():
     buttons_row = [button, button_1]
     buttons_row_two = [button_2, button_7]
 
-
-    key_get_start = ReplyKeyboardMarkup(keyboard=[buttons_row, buttons_row_two], resize_keyboard=True, input_field_placeholder='Воспользуйтесь клавиатурой')
+    key_get_start = ReplyKeyboardMarkup(keyboard=[buttons_row, buttons_row_two], resize_keyboard=True,
+                                        input_field_placeholder='Воспользуйтесь клавиатурой')
     return key_get_start
-
 
 
 def admin_functions():
@@ -25,8 +25,8 @@ def admin_functions():
     buttons_row_two = [button, button_1]
     button_row_three = [button_2]
 
-
-    admin_functions = ReplyKeyboardMarkup(keyboard=[buttons_row_two, button_row_three], resize_keyboard=True, input_field_placeholder="Воспользуйтесь клавиатурой")
+    admin_functions = ReplyKeyboardMarkup(keyboard=[buttons_row_two, button_row_three], resize_keyboard=True,
+                                          input_field_placeholder="Воспользуйтесь клавиатурой")
     return admin_functions
 
 
@@ -41,11 +41,10 @@ def admin_key_get_start():
     buttons_row_two = [button_2, button_7]
     button_row_three = [button_8]
 
-
-    admin_key_get_start = ReplyKeyboardMarkup(keyboard=[buttons_row, buttons_row_two, button_row_three], resize_keyboard=True, input_field_placeholder="Воспользуйтесь клавиатурой")
+    admin_key_get_start = ReplyKeyboardMarkup(keyboard=[buttons_row, buttons_row_two, button_row_three],
+                                              resize_keyboard=True,
+                                              input_field_placeholder="Воспользуйтесь клавиатурой")
     return admin_key_get_start
-
-
 
 
 def key_selsovet():
@@ -106,50 +105,6 @@ def key_social_objects():
     return key_social_objects
 
 
-def key_cerkov():
-    button = KeyboardButton(text="Великие праздники")
-    button_2 = KeyboardButton(text="Галерея")
-
-    button_7 = KeyboardButton(text="Назад")
-
-    buttons_row = [button, button_2]
-    buttons_row_four = [button_7]
-
-    key_cerkov = ReplyKeyboardMarkup(keyboard=[buttons_row, buttons_row_four],
-                                     resize_keyboard=True, input_field_placeholder="Воспользуйтесь клавиатурой"
-                                     )
-    return key_cerkov
-
-def key_tourists():
-    button = KeyboardButton(text="Активный отдых")
-    button_2 = KeyboardButton(text="Галерея")
-
-    button_3 = KeyboardButton(text="Назад")
-
-    buttons_row = [button, button_2]
-    buttons_row_two = [button_3]
-    key_tourists = ReplyKeyboardMarkup(keyboard=[buttons_row, buttons_row_two],
-                                   resize_keyboard=True, input_field_placeholder="Воспользуйтесь клавиатурой"
-                                   )
-    return key_tourists
-
-
-
-
-def key_lake():
-    button = KeyboardButton(text="Как добраться?")
-    button_1 = KeyboardButton(text="Маршрут")
-
-    button_4 = KeyboardButton(text="Меню")
-
-    buttons_row = [button, button_1]
-
-    buttons_row_three = [button_4]
-    key_lake = ReplyKeyboardMarkup(keyboard=[buttons_row, buttons_row_three],
-                               resize_keyboard=True, input_field_placeholder="Воспользуйтесь клавиатурой"
-                               )
-    return key_lake
-
 def key_get_raspisaniee():
     button = KeyboardButton(text="Автобусы")
     button_1 = KeyboardButton(text="Электропоезда")
@@ -159,10 +114,9 @@ def key_get_raspisaniee():
     buttons_row = [button, button_1]
     buttons_row_two = [button_2]
     key_raspisaniee = ReplyKeyboardMarkup(keyboard=[buttons_row, buttons_row_two],
-                                      resize_keyboard=True, input_field_placeholder="Воспользуйтесь клавиатурой"
-                                      )
+                                          resize_keyboard=True, input_field_placeholder="Воспользуйтесь клавиатурой"
+                                          )
     return key_raspisaniee
-
 
 
 def key_get_raspisanie():
@@ -173,9 +127,10 @@ def key_get_raspisanie():
     buttons_row = [button, button_1]
     buttons_row_two = [button_3, button_4]
     key_get_raspisanie = ReplyKeyboardMarkup(keyboard=[buttons_row, buttons_row_two],
-                                     resize_keyboard=True, input_field_placeholder="Воспользуйтесь клавиатурой"
-                                        )
+                                             resize_keyboard=True, input_field_placeholder="Воспользуйтесь клавиатурой"
+                                             )
     return key_get_raspisanie
+
 
 def key_eventt():
     button = KeyboardButton(text="На Борисов, Минск")
@@ -185,9 +140,10 @@ def key_eventt():
     buttons_row = [button, button_1]
     buttons_row_two = [button_3]
     key_eventt = ReplyKeyboardMarkup(keyboard=[buttons_row, buttons_row_two],
-                                 resize_keyboard=True, input_field_placeholder="Воспользуйтесь клавиатурой"
-                                 )
+                                     resize_keyboard=True, input_field_placeholder="Воспользуйтесь клавиатурой"
+                                     )
     return key_eventt
+
 
 def key_ysha():
     button = KeyboardButton(text="На Борисов, Минск🌃")
@@ -197,9 +153,10 @@ def key_ysha():
     buttons_row = [button, button_1]
     buttons_row_two = [button_2]
     key_ysha = ReplyKeyboardMarkup(keyboard=[buttons_row, buttons_row_two],
-                               resize_keyboard=True, input_field_placeholder="Воспользуйтесь клавиатурой"
-                               )
+                                   resize_keyboard=True, input_field_placeholder="Воспользуйтесь клавиатурой"
+                                   )
     return key_ysha
+
 
 def key_ysh():
     button = KeyboardButton(text="На Борисов, Минск🌆")
@@ -209,9 +166,10 @@ def key_ysh():
     buttons_row = [button, button_1]
     buttons_row_two = [button_2]
     key_ysh = ReplyKeyboardMarkup(keyboard=[buttons_row, buttons_row_two],
-                              resize_keyboard=True, input_field_placeholder="Воспользуйтесь клавиатурой"
-                              )
+                                  resize_keyboard=True, input_field_placeholder="Воспользуйтесь клавиатурой"
+                                  )
     return key_ysh
+
 
 def vlast():
     button = KeyboardButton(text="Исполком")
@@ -227,6 +185,7 @@ def vlast():
     vlast = ReplyKeyboardMarkup(keyboard=[buttons_row, buttons_row_two, buttons_row_tree], resize_keyboard=True,
                                 input_field_placeholder="Воспользуйтесь клавиатурой")
     return vlast
+
 
 def key_slb():
     button = KeyboardButton(text="Отдел ЗАГС")
@@ -248,8 +207,9 @@ def key_slb():
     key_slb = ReplyKeyboardMarkup(
         keyboard=[buttons_row, buttons_row_two, buttons_row_three, buttons_row_four, buttons_row_six],
         resize_keyboard=True, input_field_placeholder="Воспользуйтесь клавиатурой"
-        )
+    )
     return key_slb
+
 
 def key_soc():
     button = KeyboardButton(text="Образование")
@@ -265,9 +225,10 @@ def key_soc():
     buttons_row_two = [button_4, button_7]
 
     key_soc = ReplyKeyboardMarkup(keyboard=[buttons_row, buttons_row_1, buttons_row_two],
-                              resize_keyboard=True, input_field_placeholder="Воспользуйтесь клавиатурой"
-                              )
+                                  resize_keyboard=True, input_field_placeholder="Воспользуйтесь клавиатурой"
+                                  )
     return key_soc
+
 
 def key_ek():
     button = KeyboardButton(text="Сельское хозяйстыво")
@@ -286,10 +247,12 @@ def key_ek():
     buttons_row_four = [button_9, button_10]
     buttons_row_five = [button_7]
 
-    key_ek = ReplyKeyboardMarkup(keyboard=[buttons_row, buttons_row_1, buttons_row_two, buttons_row_four, buttons_row_five],
-                             resize_keyboard=True, input_field_placeholder="Воспользуйтесь клавиатурой"
-                             )
+    key_ek = ReplyKeyboardMarkup(
+        keyboard=[buttons_row, buttons_row_1, buttons_row_two, buttons_row_four, buttons_row_five],
+        resize_keyboard=True, input_field_placeholder="Воспользуйтесь клавиатурой"
+    )
     return key_ek
+
 
 def key_histt():
     button = KeyboardButton(text="Геральдика")
@@ -298,7 +261,7 @@ def key_histt():
     buttons_row_six = [button, button_4]
 
     key_histt = ReplyKeyboardMarkup(keyboard=[buttons_row_six],
-                                resize_keyboard=True, input_field_placeholder="Воспользуйтесь клавиатурой"
+                                    resize_keyboard=True, input_field_placeholder="Воспользуйтесь клавиатурой"
                                     )
     return key_histt
 
@@ -310,6 +273,6 @@ def weather():
     buttons_row_six = [button, button_4]
 
     key_histt = ReplyKeyboardMarkup(keyboard=[buttons_row_six],
-                                resize_keyboard=True, input_field_placeholder="Воспользуйтесь клавиатурой"
+                                    resize_keyboard=True, input_field_placeholder="Воспользуйтесь клавиатурой"
                                     )
     return key_histt

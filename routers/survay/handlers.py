@@ -2,7 +2,6 @@ from aiogram.fsm.context import FSMContext
 from .states import Survey
 import json
 import time
-import subprocess
 import requests
 from aiogram import Router, types, F
 from aiogram.enums import ChatAction
@@ -11,27 +10,12 @@ from aiogram.enums import ParseMode
 from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
 import random
 
-
-from ..Keyboard import key_get_start, admin_key_get_start,  key_get_raspisaniee
-
-
+from ..Keyboard import key_get_start, admin_key_get_start, key_get_raspisaniee
 
 router = Router(name=__name__)
 
 API = '239cee0024050686ff009bb45541c0fa'
 WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather"
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 @router.callback_query(F.data == 'search')
@@ -46,11 +30,8 @@ async def full_name(message: types.Message, state: FSMContext):
     same = get_weather(city)
     await state.update_data(full_name=message.text)
     await message.answer(f"{same}", reply_markup=weather_keyboard_two)
-
     await state.set_state(Survey.full_name)
     await state.clear()
-
-
 
 
 @router.message(Survey.full_name)
@@ -58,13 +39,10 @@ async def full_name(message: types.Message):
     await message.answer(f"SEARCH Некорректный тип введенных данных! Повторите попытку ввода данных: ")
 
 
-
-
 @router.message(Command('weather'))
 async def weather(message: types.Message, state: FSMContext):
     city = "славное"
     trn = requests.get(f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API}&units=metric&lang=ru')
-
     data = json.loads(trn.text)
     c = data['main']['pressure'] * 0.75
     m = f"{data["main"]["temp"]}"
@@ -74,9 +52,6 @@ async def weather(message: types.Message, state: FSMContext):
     wind = f"{data['wind']['speed']}"
     weather = data['weather'][0]['description']
     wind = float(wind)
-
-
-
     await message.bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
     text = f"{pic()}\nТекущая погода в Славновском сельсовете:"
     text_1 = '🌡 Температура воздуха:'
@@ -96,193 +71,180 @@ async def weather(message: types.Message, state: FSMContext):
     davlenie = f"{c}"
     davlenie = float(davlenie)
 
-    if float(0.01) < wind <= float (0.20):
+    if float(0.01) < wind <= float(0.20):
         a = "безветрянность"
-    if float(0.21) < wind <= float (1.50):
+    if float(0.21) < wind <= float(1.50):
         a = "незначительный ветер"
-    if float(1.51) < wind <= float (3.30):
+    if float(1.51) < wind <= float(3.30):
         a = "легкий ветер"
     if float(3.31) < wind <= float(5.40):
         a = "слабый ветер"
-    if float(5.41) < wind <= float (7.90):
+    if float(5.41) < wind <= float(7.90):
         a = "умеренный ветер"
-    if float(7.91) < wind <= float (10.70):
+    if float(7.91) < wind <= float(10.70):
         a = "свежий ветер"
-    if float(10.71) < wind <= float (13.80):
+    if float(10.71) < wind <= float(13.80):
         a = "сильный ветер"
-    if float(13.81) < wind <= float (17.10):
+    if float(13.81) < wind <= float(17.10):
         a = "крепкий ветер"
-    if float(17.11) < wind <= float (20.70):
+    if float(17.11) < wind <= float(20.70):
         a = "очень крепкий ветер"
-    if float(20.71) < wind <= float (24.40):
+    if float(20.71) < wind <= float(24.40):
         a = "штормовые условия"
-    if float(24.41) < wind <= float (28.40):
+    if float(24.41) < wind <= float(28.40):
         a = "сильно штормые условия"
-    if float(28.41) < wind <= float (32.60):
+    if float(28.41) < wind <= float(32.60):
         a = "жесткий шторм"
     if float(32.61) < wind:
         a = "ураган"
-
     if int(0) <= humidity <= int(40):
         b = "пониженная влажность"
     if int(41) <= humidity <= int(60):
         b = "комфортная влажность"
     if int(61) <= humidity <= int(100):
         b = "повышенная влажность"
-
-
     if float(750.00) <= davlenie <= float(770.01):
         c = "Атмосферное давление имеет комфортные для самочувствия показатели."
     if float(749.99) > davlenie:
         c = "Имеет место пониженное атмосферное давление, следите за своим самочувствием."
     if davlenie > float(770.02):
         c = "Атмосферное давление повышено, следите за своим самочувствием."
-
-
     if m <= float(-30.00):
-        await message.answer(text=f"‼️ На улице крайне {weather}, холодно, преобладают {a} и {b}. Одевайтесь крайне тепло! {c}.\n\nНародная примета {mon()}:\n🗓️ {mounth()}\n\nДля получения актуальных сведений о состоянии текущей погоды в иных населенных пунктах нажмите 🔍. Далее в строке ввода наберите интересующее Вас название населенного пунта, нажмите - [отправить].", reply_markup=weather_keyboard)
+        await message.answer(
+            text=f"‼️ На улице крайне {weather}, холодно, преобладают {a} и {b}. Одевайтесь крайне тепло! {c}.\n\nНародная примета {mon()}:\n🗓️ {mounth()}\n\nДля получения актуальных сведений о состоянии текущей погоды в иных населенных пунктах нажмите 🔍. Далее в строке ввода наберите интересующее Вас название населенного пунта, нажмите - [отправить].",
+            reply_markup=weather_keyboard)
     if m >= float(-30.00) and m <= float(-24.00):
-        await message.answer(text=f"‼️ На улице {weather}, очень холодно, преобладают {a} и {b}. Одевайтесь очень тепло! {c}.\n\nНародная примета {mon()}:\n🗓️ {mounth()}\n\nДля получения актуальных сведений о состоянии текущей погоды в иных населенных пунктах нажмите 🔍. Далее в строке ввода наберите интересующее Вас название населенного пунта, нажмите - [отправить].", reply_markup=weather_keyboard)
+        await message.answer(
+            text=f"‼️ На улице {weather}, очень холодно, преобладают {a} и {b}. Одевайтесь очень тепло! {c}.\n\nНародная примета {mon()}:\n🗓️ {mounth()}\n\nДля получения актуальных сведений о состоянии текущей погоды в иных населенных пунктах нажмите 🔍. Далее в строке ввода наберите интересующее Вас название населенного пунта, нажмите - [отправить].",
+            reply_markup=weather_keyboard)
     if m >= float(00.00) and m <= float(06.00):
-        await message.answer(text=f"‼️ На улице {weather}, умеренно прохладно, преобладают {a} и {b}. Одевайтесь тепло! {c}.\n\nНародная примета {mon()}:\n🗓️ {mounth()}\n\nДля получения актуальных сведений о состоянии текущей погоды в иных населенных пунктах нажмите 🔍. Далее в строке ввода наберите интересующее Вас название населенного пунта, нажмите - [отправить].", reply_markup=weather_keyboard)
+        await message.answer(
+            text=f"‼️ На улице {weather}, умеренно прохладно, преобладают {a} и {b}. Одевайтесь тепло! {c}.\n\nНародная примета {mon()}:\n🗓️ {mounth()}\n\nДля получения актуальных сведений о состоянии текущей погоды в иных населенных пунктах нажмите 🔍. Далее в строке ввода наберите интересующее Вас название населенного пунта, нажмите - [отправить].",
+            reply_markup=weather_keyboard)
     if m >= float(06.00) and m <= float(12.00):
-        await message.answer(text=f"‼️ На улице {weather}, прохладно, преобладают {a} и {b}. Одевайтесь теплее! {c}.\n\nНародная примета {mon()}:\n🗓️ {mounth()}\n\nДля получения актуальных сведений о состоянии текущей погоды в иных населенных пунктах нажмите 🔍. Далее в строке ввода наберите интересующее Вас название населенного пунта, нажмите - [отправить].", reply_markup=weather_keyboard)
+        await message.answer(
+            text=f"‼️ На улице {weather}, прохладно, преобладают {a} и {b}. Одевайтесь теплее! {c}.\n\nНародная примета {mon()}:\n🗓️ {mounth()}\n\nДля получения актуальных сведений о состоянии текущей погоды в иных населенных пунктах нажмите 🔍. Далее в строке ввода наберите интересующее Вас название населенного пунта, нажмите - [отправить].",
+            reply_markup=weather_keyboard)
     if m >= float(12.00) and m <= float(18.00):
-        await message.answer(text=f"‼️ На улице {weather}, умеренно тепло, преобладают {a} и {b}. {c}\n\nНародная примета {mon()}:\n🗓️ {mounth()}\n\nДля получения актуальных сведений о состоянии текущей погоды в иных населенных пунктах нажмите 🔍. Далее в строке ввода наберите интересующее Вас название населенного пунта, нажмите - [отправить].", reply_markup=weather_keyboard)
+        await message.answer(
+            text=f"‼️ На улице {weather}, умеренно тепло, преобладают {a} и {b}. {c}\n\nНародная примета {mon()}:\n🗓️ {mounth()}\n\nДля получения актуальных сведений о состоянии текущей погоды в иных населенных пунктах нажмите 🔍. Далее в строке ввода наберите интересующее Вас название населенного пунта, нажмите - [отправить].",
+            reply_markup=weather_keyboard)
     if m >= float(18.00) and m <= float(24.00):
-        await message.answer(text=f"‼️ На улице {weather}, тепло, преобладают {a} и {b}. {c}\n\nНародная примета {mon()}:\n🗓️ {mounth()}\n\nДля получения актуальных сведений о состоянии текущей погоды в иных населенных пунктах нажмите 🔍. Далее в строке ввода наберите интересующее Вас название населенного пунта, нажмите - [отправить].", reply_markup=weather_keyboard)
+        await message.answer(
+            text=f"‼️ На улице {weather}, тепло, преобладают {a} и {b}. {c}\n\nНародная примета {mon()}:\n🗓️ {mounth()}\n\nДля получения актуальных сведений о состоянии текущей погоды в иных населенных пунктах нажмите 🔍. Далее в строке ввода наберите интересующее Вас название населенного пунта, нажмите - [отправить].",
+            reply_markup=weather_keyboard)
     if m >= float(24.00) and m <= float(30.00):
-        await message.answer(text=f"‼️ На улице {weather}, жарко, преобладают {a} и {b}. {c}\n\nНародная примета {mon()}:\n🗓️ {mounth()}\n\nДля получения актуальных сведений о состоянии текущей погоды в иных населенных пунктах нажмите 🔍. Далее в строке ввода наберите интересующее Вас название населенного пунта, нажмите - [отправить].", reply_markup=weather_keyboard)
+        await message.answer(
+            text=f"‼️ На улице {weather}, жарко, преобладают {a} и {b}. {c}\n\nНародная примета {mon()}:\n🗓️ {mounth()}\n\nДля получения актуальных сведений о состоянии текущей погоды в иных населенных пунктах нажмите 🔍. Далее в строке ввода наберите интересующее Вас название населенного пунта, нажмите - [отправить].",
+            reply_markup=weather_keyboard)
     if m >= float(30.00) and m <= float(35.00):
-        await message.answer(text=f"‼️ На улице {weather}, очень жарко, преобладают {a} и {b}. {c}\n\nНародная примета {mon()}:\n🗓️ {mounth()}\n\nДля получения актуальных сведений о состоянии текущей погоды в иных населенных пунктах нажмите 🔍. Далее в строке ввода наберите интересующее Вас название населенного пунта, нажмите - [отправить].", reply_markup=weather_keyboard)
+        await message.answer(
+            text=f"‼️ На улице {weather}, очень жарко, преобладают {a} и {b}. {c}\n\nНародная примета {mon()}:\n🗓️ {mounth()}\n\nДля получения актуальных сведений о состоянии текущей погоды в иных населенных пунктах нажмите 🔍. Далее в строке ввода наберите интересующее Вас название населенного пунта, нажмите - [отправить].",
+            reply_markup=weather_keyboard)
     if m >= float(35.00):
-        await message.answer(text=f"‼️На улице {weather}, крайне жарко, преобладают {a} и {b}. {c}\n\nНародная примета {mon()}:\n🗓️ {mounth()}\n\nДля получения актуальных сведений о состоянии текущей погоды в иных населенных пунктах нажмите 🔍. Далее в строке ввода наберите интересующее Вас название населенного пунта, нажмите - [отправить].", reply_markup=weather_keyboard)
-
+        await message.answer(
+            text=f"‼️На улице {weather}, крайне жарко, преобладают {a} и {b}. {c}\n\nНародная примета {mon()}:\n🗓️ {mounth()}\n\nДля получения актуальных сведений о состоянии текущей погоды в иных населенных пунктах нажмите 🔍. Далее в строке ввода наберите интересующее Вас название населенного пунта, нажмите - [отправить].",
+            reply_markup=weather_keyboard)
 
 
 @router.message(Command('raspisanie'))
 async def start(message: types.Message, state: FSMContext):
-    await message.answer(text="Выберите вид транспорта:",reply_markup=key_get_raspisaniee())
+    await message.answer(text="Выберите вид транспорта:", reply_markup=key_get_raspisaniee())
     await state.set_state(Survey.feedback)
-
-
 
 
 @router.message(Command('project'))
 async def start(message: types.Message, state: FSMContext):
     text = '[slavnoemyplace](https://www.instagram.com/slavnoemyplace/)'
-    text_telegram = '[Славное, Толочинский район🌿](https://t.me/myplaceslavnoe)'
-
     await message.answer(text=f"Проект реализован командой сообществ {text}\nв социальной сети Instagram\\.",
                          parse_mode='MarkdownV2', reply_markup=key_get_start())
     await state.set_state(Survey.feedback)
 
 
-
-
-
-gallery_menu = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="︎Бросаю кость 🎲", callback_data="kubic")]])
+gallery_menu = InlineKeyboardMarkup(
+    inline_keyboard=[[InlineKeyboardButton(text="︎Бросаю кость 🎲", callback_data="kubic")]])
 
 
 @router.message(F.text == "Галерея")
 async def send_naselennyi_punkt(message: types.Message):
-    photo = '/Users/user/Desktop/СЛАВНОЕ/СЛАВНОЕ БОТ/routers/pic/random/1.jpg'
-    photo_1 = '/Users/user/Desktop/СЛАВНОЕ/СЛАВНОЕ БОТ/routers/pic/random/2.jpg'
-    photo_2 = '/Users/user/Desktop/СЛАВНОЕ/СЛАВНОЕ БОТ/routers/pic/random/3.jpg'
-    photo_3 = '/Users/user/Desktop/СЛАВНОЕ/СЛАВНОЕ БОТ/routers/pic/random/5.jpg'
+    photo = '/Users/dzianis/PycharmProjects/SLV_BOT/routers/pic/random/1.jpg'
+    photo_1 = '/Users/dzianis/PycharmProjects/SLV_BOT/routers/pic/random/2.jpg'
+    photo_2 = '/Users/dzianis/PycharmProjects/SLV_BOT/routers/pic/random/3.jpg'
+    photo_3 = '/Users/dzianis/PycharmProjects/SLV_BOT/routers/pic/random/5.jpg'
     h = [photo_1, photo_2, photo, photo_3]
     same = random.choice(h)
-    await message.answer(f'{message.from_user.full_name}, представленная в текущем разделе галерея фотоснимков насчитывает триста шестьдесят тематических фотографий демонстрирующих красоту Славного сельского совета. Для удобного просмотра материалов реализован алгоритм случайного выбора.')
-
+    await message.answer(
+        f'{message.from_user.full_name}, представленная в текущем разделе галерея фотоснимков насчитывает триста шестьдесят тематических фотографий демонстрирующих красоту Славного сельского совета. Для удобного просмотра материалов реализован алгоритм случайного выбора.')
     await message.answer_photo(photo=types.FSInputFile(path=same))
-
-    await message.answer(text=f"Для повторного получения случайного изображения из галереи воспользуйтесь игральной костью 🎲", reply_markup=gallery_menu)
+    await message.answer(
+        text=f"Для повторного получения случайного изображения из галереи воспользуйтесь игральной костью 🎲",
+        reply_markup=gallery_menu)
 
 
 @router.callback_query(F.data == 'kubic')
 async def search(callback: CallbackQuery):
-    photo = '/Users/user/Desktop/СЛАВНОЕ/СЛАВНОЕ БОТ/routers/pic/random/1.jpg'
-    photo_1 = '/Users/user/Desktop/СЛАВНОЕ/СЛАВНОЕ БОТ/routers/pic/random/2.jpg'
-    photo_2 = '/Users/user/Desktop/СЛАВНОЕ/СЛАВНОЕ БОТ/routers/pic/random/3.jpg'
-    photo_3 = '/Users/user/Desktop/СЛАВНОЕ/СЛАВНОЕ БОТ/routers/pic/random/5.jpg'
+    photo = '/Users/dzianis/PycharmProjects/SLV_BOT/routers/pic/random/1.jpg'
+    photo_1 = '/Users/dzianis/PycharmProjects/SLV_BOT/routers/pic/random/2.jpg'
+    photo_2 = '/Users/dzianis/PycharmProjects/SLV_BOT/routers/pic/random/3.jpg'
+    photo_3 = '/Users/dzianis/PycharmProjects/SLV_BOT/routers/pic/random/5.jpg'
     h = [photo_1, photo_2, photo, photo_3]
     same = random.choice(h)
     await callback.message.answer_photo(photo=types.FSInputFile(path=same))
     await callback.message.answer(text='Для продолжения воспользуйтесь игральной костью 🎲', reply_markup=gallery_menu)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @router.message(Survey.photo, F.text)
 async def full_name(message: types.Message, state: FSMContext):
-    photo = '/Users/user/Desktop/СЛАВНОЕ/СЛАВНОЕ БОТ/routers/pic/random/DJI_0043.JPG'
-    photo_1 = '/Users/user/Desktop/СЛАВНОЕ/СЛАВНОЕ БОТ/routers/pic/random/DJI_0047.JPG'
-    photo_2 = '/Users/user/Desktop/СЛАВНОЕ/СЛАВНОЕ БОТ/routers/pic/random/DJI_0063.JPG'
-    h = [photo_1, photo_2, photo]
+    photo = '/Users/dzianis/PycharmProjects/SLV_BOT/routers/pic/random/1.jpg'
+    photo_1 = '/Users/dzianis/PycharmProjects/SLV_BOT/routers/pic/random/2.jpg'
+    photo_2 = '/Users/dzianis/PycharmProjects/SLV_BOT/routers/pic/random/3.jpg'
+    photo_3 = '/Users/dzianis/PycharmProjects/SLV_BOT/routers/pic/random/5.jpg'
+    h = [photo_1, photo_2, photo, photo_3]
     same = random.choice(h)
-
     await message.answer_photo(photo=types.FSInputFile(path=same))
-
     await state.set_state(Survey.photo)
     await state.clear()
 
 
 def get_weather(city):
-        params = {
-            'q': city,
-            'appid': API,
-            'units': 'metric',
-            'lang': 'ru'
-        }
+    params = {
+        'q': city,
+        'appid': API,
+        'units': 'metric',
+        'lang': 'ru'
+    }
+    response = requests.get(WEATHER_URL, params=params)
+    if response.status_code == 200:
+        data = response.json()
+        weatheerr = {
+            'city': data['name'],
+            'temperature': data['main']['temp'],
+            'temperaturee': data['main']['feels_like'],
+            'country': data['sys']['country'],
+            'descriptions': data['weather'][0]['description'],
+            'himidity': data['main']['humidity'],
+            'pressure': data['main']['pressure'],
+            'speed': data['wind']['speed']}
 
-        response = requests.get(WEATHER_URL, params=params)
+        text = f"{data['name']}, {country(city)}. Текущая погода:"
+        text_1 = '🌡 Температура воздуха:'
+        text_2 = f'🔥 Чувствуется как:'
+        text_3 = f'🤕 Атмосферное давление:'
+        text_4 = '💦 Влажность:'
+        text_5 = '💨 Ветер:'
 
-        if response.status_code == 200:
-            data = response.json()
-            weatheerr = {
-                'city': data['name'],
-                'temperature': data['main']['temp'],
-                'temperaturee': data['main']['feels_like'],
-                'country' : data['sys']['country'],
-                'descriptions': data['weather'][0]['description'],
-                'himidity': data['main']['humidity'],
-                'pressure': data['main']['pressure'],
-                'speed' : data['wind']['speed']}
+        man = (f"{text}\n\n{text_1} {data["main"]["temp"]}°"
+               f"\n{text_2} {data["main"]["feels_like"]}°"
+               f"\n{text_3} {data['main']['pressure'] * 0.75} мм рт.ст."
+               f"\n{text_4} {data['main']['humidity']} %"
+               f"\n{text_5} {data['wind']['speed']} м/c"
+               f"\n\n‼️ На улице {data['weather'][0]['description']}, {zharko(city)}, преобладают {veter(city)} и {vlazhnost(city)}. {davlenie(city)}"
+               f"\n\nДля получения актуальных сведений о состоянии текущей погоды в иных населенных пунктах нажмите 🔍. Далее в строке ввода наберите интересующее Вас название населенного пунта, нажмите - [отправить].")
+        return man
 
-            text = f"{data['name']}, {country(city)}. Текущая погода:"
-            text_1 = '🌡 Температура воздуха:'
-            text_2 = f'🔥 Чувствуется как:'
-            text_3 = f'🤕 Атмосферное давление:'
-            text_4 = '💦 Влажность:'
-            text_5 = '💨 Ветер:'
-
-            man = (f"{text}\n\n{text_1} {data["main"]["temp"]}°"
-                   f"\n{text_2} {data["main"]["feels_like"]}°"
-                   f"\n{text_3} {data['main']['pressure'] * 0.75} мм рт.ст."
-                   f"\n{text_4} {data['main']['humidity']} %"
-                   f"\n{text_5} {data['wind']['speed']} м/c"
-                   f"\n\n‼️ На улице {data['weather'][0]['description']}, {zharko(city)}, преобладают {veter(city)} и {vlazhnost(city)}. {davlenie(city)}"
-                   f"\n\nДля получения актуальных сведений о состоянии текущей погоды в иных населенных пунктах нажмите 🔍. Далее в строке ввода наберите интересующее Вас название населенного пунта, нажмите - [отправить].")
-            return man
-
-        else:
-            man = "Введенное Вами название населенного пункта, города не найдено."
-            return man
-
-        return None
+    else:
+        man = "Введенное Вами название населенного пункта, города не найдено."
+        return man
 
 
 def pic_davlenie(city):
@@ -291,7 +253,6 @@ def pic_davlenie(city):
     data = json.loads(trn.text)
     c = data['main']['pressure'] * 0.75
     c = float(c)
-
     if float(750.00) <= c <= float(770.01):
         c = "😁"
         return c
@@ -301,6 +262,7 @@ def pic_davlenie(city):
     if c > float(770.02):
         c = "🤕"
         return c
+
 
 def pic_temp(city):
     city = city
@@ -315,50 +277,48 @@ def pic_temp(city):
         g = "🥶"
         return g
 
+
 def veter(city):
     city = city
     trn = requests.get(f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API}&units=metric')
     data = json.loads(trn.text)
-
     wind = f"{data['wind']['speed']}"
-
     wind = float(wind)
 
-
-    if float(0.00) < wind <= float (0.20):
+    if float(0.00) < wind <= float(0.20):
         a = "безветрянность"
         return a
-    if float(0.30) < wind <= float (1.50):
+    if float(0.30) < wind <= float(1.50):
         a = "незначительный ветер"
         return a
-    if float(1.51) < wind <= float (3.30):
+    if float(1.51) < wind <= float(3.30):
         a = "легкий ветер"
         return a
     if float(3.40) < wind <= float(5.40):
         a = "слабый ветер"
         return a
-    if float(5.41) < wind <= float (7.90):
+    if float(5.41) < wind <= float(7.90):
         a = "умеренный ветер"
         return a
-    if float(8.00) < wind <= float (10.70):
+    if float(8.00) < wind <= float(10.70):
         a = "свежий ветер"
         return a
-    if float(10.80) < wind <= float (13.80):
+    if float(10.80) < wind <= float(13.80):
         a = "сильный ветер"
         return a
-    if float(13.90) < wind <= float (17.10):
+    if float(13.90) < wind <= float(17.10):
         a = "крепкий ветер"
         return a
-    if float(17.20) < wind <= float (20.70):
+    if float(17.20) < wind <= float(20.70):
         a = "очень крепкий ветер"
         return a
-    if float(20.80) < wind <= float (24.40):
+    if float(20.80) < wind <= float(24.40):
         a = "штормовые условия"
         return a
-    if float(24.50) < wind <= float (28.40):
+    if float(24.50) < wind <= float(28.40):
         a = "сильно штормые условия"
         return a
-    if float(28.50) < wind <= float (32.60):
+    if float(28.50) < wind <= float(32.60):
         a = "жесткий шторм"
         return a
     if float(32.60) < wind:
@@ -367,13 +327,12 @@ def veter(city):
 
 
 def vlazhnost(city):
-    city=city
+    city = city
     city = city
     trn = requests.get(f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API}&units=metric')
     data = json.loads(trn.text)
     humidity = f"{data['main']['humidity']}"
     humidity = int(humidity)
-
 
     if int(0) <= humidity <= int(40):
         b = "пониженная влажность"
@@ -387,7 +346,7 @@ def vlazhnost(city):
 
 
 def davlenie(city):
-    city=city
+    city = city
     trn = requests.get(f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API}&units=metric')
     data = json.loads(trn.text)
     c = data['main']['pressure'] * 0.75
@@ -404,13 +363,13 @@ def davlenie(city):
         c = "Атмосферное давление повышено, следите за своим самочувствием."
         return c
 
+
 def zharko(city):
     city = city
     trn = requests.get(f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API}&units=metric')
     data = json.loads(trn.text)
     m = f"{data["main"]["temp"]}"
     m = float(m)
-
 
     if m <= float(-30.00):
         a = 'крайне холодно'
@@ -457,15 +416,12 @@ def zharko(city):
         return a
 
 
-
-
 def country(city):
     city = city
     trn = requests.get(f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API}&units=metric')
     data = json.loads(trn.text)
     a = data['sys']['country']
     a = str(a)
-
 
     file = open('/Users/dzianis/PycharmProjects/SLV_BOT/routers/survay/country.txt', 'r')
     nuv = open('/Users/dzianis/PycharmProjects/SLV_BOT/routers/survay/num.txt', 'r')
@@ -501,7 +457,6 @@ def country(city):
     return math
 
 
-
 @router.message(Survey.feedback)
 async def feedback(message: types.Message, state: FSMContext):
     username = message.from_user.id
@@ -515,42 +470,14 @@ async def feedback(message: types.Message, state: FSMContext):
     h = [same_one, same_two, same_three]
     same = random.choice(h)
 
-
-
     await message.answer(f'{same}')
 
     await message.bot.forward_message(chat_id=2039046861, from_chat_id=message.chat.id, message_id=message.message_id)
-    await message.bot.send_message(chat_id=2039046861, text=f"ID: {username}\nFirstname: {first_name}\nSecondname: {second_name}\nNickname: {name_two}")
+    await message.bot.send_message(chat_id=2039046861,
+                                   text=f"ID: {username}\nFirstname: {first_name}\nSecondname: {second_name}\nNickname: {name_two}")
     await state.clear()
 
     await state.set_state(Survey.feedback)
-
-
-@router.message(Survey.same_one)
-async def feedback(message: types.Message, state: FSMContext):
-    username = message.from_user.id
-    first_name = message.from_user.first_name
-    second_name = message.from_user.last_name
-    name_two = message.from_user.username
-
-    await message.answer(f'Отлично! Напиши суть претензии', reply_markup=replace)
-
-
-    await message.bot.forward_message(chat_id=2039046861, from_chat_id=message.chat.id, message_id=message.message_id)
-    await message.bot.send_message(chat_id=2039046861, text=f"ID: {username}\nFirstname: {first_name}\nSecondname: {second_name}\nNickname: {name_two}")
-    await state.clear()
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 def time_of_day():
@@ -558,7 +485,7 @@ def time_of_day():
     time_string = time.strftime("%H:%M:%S часов", named_tuple)
     time_string = str(time_string)
 
-    if str("23:00.00") <= time_string <= str("23:59:59") or str("00:00:00") <= time_string <= str ("05:00:00"):
+    if str("23:00.00") <= time_string <= str("23:59:59") or str("00:00:00") <= time_string <= str("05:00:00"):
         k = str("Доброй ночи")
         return k
 
@@ -574,17 +501,18 @@ def time_of_day():
         k = str("Добрый вечер")
         return k
 
+
 @router.message(CommandStart)
 async def start(message: types.Message):
     text_telegram = '[«Мое место»](https://t.me/myplaceslavnoe)'
     await message.answer(text=f"{time_of_day()}\\, *{message.from_user.full_name}* 🖐\n\n"
-             f"Мое имя Демид\\! Я бот\\-помощник\\, представляю Вам цифровую коммуникативную платформу\\, разработанную для жителей и гостей населенных пунктов\\,"
-             f" входящих в состав Славновского сельского совета Толочинского района Витебской области 🌿\\. Наш телеграм\\-чат {text_telegram}\\, подписывайся\\!", parse_mode=ParseMode.MARKDOWN_V2, reply_markup=key_get_start())
-    if message.from_user.id == int(2039046861):
-        await message.answer(f'Вы авторизовались как администратор!', reply_markup=admin_key_get_start())
+                              f"Мое имя Демид\\! Я бот\\-помощник\\, представляю Вам цифровую коммуникативную платформу\\, разработанную для жителей и гостей населенных пунктов\\,"
+                              f" входящих в состав Славновского сельского совета Толочинского района Витебской области 🌿\\. Наш телеграм\\-чат {text_telegram}\\, подписывайся\\!",
+                         parse_mode=ParseMode.MARKDOWN_V2, reply_markup=key_get_start())
 
 
-weather_keyboard = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="︎Интересно знать", url='https://telegra.ph/Samaya-nizkaya-temperatura-za-istoriyu-meteonablyudenij-08-16')],
+weather_keyboard = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="︎Интересно знать",
+                                                                               url='https://telegra.ph/Samaya-nizkaya-temperatura-za-istoriyu-meteonablyudenij-08-16')],
                                                          [InlineKeyboardButton(text='🔍', callback_data="search")]])
 
 weather_keyboard_two = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="︎🔍", callback_data="search")]])
@@ -592,7 +520,9 @@ weather_keyboard_two = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButt
 
 @router.callback_query(F.data == 'zavtra')
 async def zavtra(callback: CallbackQuery):
-    await callback.message.answer(text="💡 Самая низкая температура за всю историю метеонаблюдений в Беларуси - минус 42,2 градуса фиксировалась 17 января 1940 года в поселке Славное Толочинского района.")
+    await callback.message.answer(
+        text="💡 Самая низкая температура за всю историю метеонаблюдений в Беларуси - минус 42,2 градуса фиксировалась 17 января 1940 года в поселке Славное Толочинского района.")
+
 
 def mon():
     named_tuple = time.localtime()  # получить struct_time
@@ -636,23 +566,29 @@ def mon():
         t = "декабря"
         return t
 
+
 def pic():
     named_tuple = time.localtime()  # получить struct_time
     main_data = time.strftime("%d.%m.%Y", named_tuple)
     main_data = str(main_data)
 
-    if main_data[3] == str(1) and main_data[4] == str(1) or main_data[3] == str(0) and main_data[4] == str(1) or main_data[3] == str(0) and main_data[4] == str(2):
+    if main_data[3] == str(1) and main_data[4] == str(1) or main_data[3] == str(0) and main_data[4] == str(1) or \
+            main_data[3] == str(0) and main_data[4] == str(2):
         t = "На дворе зима ❄️"
         return t
-    if main_data[3] == str(0) and main_data[4] == str(3) or main_data[3] == str(0) and main_data[4] == str(4) or main_data[3] == str(0) and main_data[4] == str(5):
+    if main_data[3] == str(0) and main_data[4] == str(3) or main_data[3] == str(0) and main_data[4] == str(4) or \
+            main_data[3] == str(0) and main_data[4] == str(5):
         t = "На дворе весна 🦋️"
         return t
-    if main_data[3] == str(0) and main_data[4] == str(6) or main_data[3] == str(0) and main_data[4] == str(7) or main_data[3] == str(0) and main_data[4] == str(8):
+    if main_data[3] == str(0) and main_data[4] == str(6) or main_data[3] == str(0) and main_data[4] == str(7) or \
+            main_data[3] == str(0) and main_data[4] == str(8):
         t = "На дворе лето 🍃️"
         return t
-    if main_data[3] == str(0) and main_data[4] == str(9) or main_data[3] == str(1) and main_data[4] == str(0) or main_data[3] == str(1) and main_data[4] == str(1):
+    if main_data[3] == str(0) and main_data[4] == str(9) or main_data[3] == str(1) and main_data[4] == str(0) or \
+            main_data[3] == str(1) and main_data[4] == str(1):
         t = "На дворе лето 🍂"
         return t
+
 
 def pic_temp():
     city = "славное"
@@ -666,6 +602,7 @@ def pic_temp():
     if m <= float(00.00):
         g = "🥶"
         return g
+
 
 def pic_davlenie():
     city = "славное"
@@ -683,6 +620,7 @@ def pic_davlenie():
     if c > float(770.02):
         c = "🤕"
         return c
+
 
 def mounth():
     named_tuple = time.localtime()  # получить struct_time
@@ -876,7 +814,8 @@ def mounth():
         a25 = "Много шишек на ели – ждите хороший урожай огурцов."
         a26 = "Частые грозы сулят хороший урожай."
         a27 = "Много комаров – к изобилию ягод."
-        er = [a1, a2, a3, a4,a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21,a22, a23, a24, a25, a26, a27]
+        er = [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23,
+              a24, a25, a26, a27]
         return random.choice(er)
 
     if main_data[3] == str(0) and main_data[4] == str(7):
@@ -937,7 +876,6 @@ def mounth():
         a22 = "В августе дуб богат желудями — к урожаю."
         a23 = "Если в августе листья на деревьях желтеют снизу, то ранний сев будет хорошим."
         a24 = "Если лягушки прыгают на берег и квакают днем, то будет дождь."
-
 
         er = [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23,
               a24]
@@ -1068,7 +1006,3 @@ def mounth():
         er = [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23,
               a24, a25, a26, a27]
         return random.choice(er)
-
-
-
-
