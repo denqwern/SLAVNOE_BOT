@@ -10,7 +10,7 @@ from aiogram.enums import ParseMode
 from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
 import random
 
-from ..Keyboard import key_get_start, admin_key_get_start, key_get_raspisaniee
+from ..Keyboard import key_get_start, key_get_raspisaniee
 
 router = Router(name=__name__)
 
